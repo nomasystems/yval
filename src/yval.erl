@@ -17,6 +17,9 @@
 %%%-------------------------------------------------------------------
 -module(yval).
 
+%% Include files
+-include_lib("kernel/include/logger.hrl").
+
 %% API
 -export([validate/2, fail/2]).
 -export([format_error/1, format_error/2, format_ctx/1]).
@@ -1144,8 +1147,11 @@ validate_options([{O, Val}|Opts], Validators, DefaultValidator,
         false ->
             case maps:get(Opt, Validators, DefaultValidator) of
                 undefined ->
-                    Allowed = maps:keys(Validators) -- Disallowed,
-                    fail({unknown_option, Allowed, Opt});
+                    % TODO: revisit this
+                    ?LOG_WARNING("[yval] Unknown option: ~p", [Opt]),
+                    validate_options(Opts, Validators, DefaultValidator,
+                                     Required, Defaults, Disallowed,
+                                     CheckDups, Return, Acc);
                 Validator when is_atom(Opt) ->
                     case CheckDups andalso lists:keymember(Opt, 1, Acc) of
                         true -> fail({duplicated_option, Opt});
