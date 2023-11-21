@@ -617,7 +617,7 @@ map(Fun1, Fun2) ->
 map(Fun1, Fun2, Opts) when ?is_validator(Fun1) andalso
                            ?is_validator(Fun2) ->
     fun(L) when is_list(L) ->
-            M1 = lists:map(
+            List = lists:map(
                    fun({Key, Val}) ->
                            Key1 = Fun1(Key),
                            Ctx = get_ctx(),
@@ -628,12 +628,11 @@ map(Fun1, Fun2, Opts) when ?is_validator(Fun1) andalso
                       (_) ->
                            fail({bad_map, L})
                    end, L),
-            M2 = unique(M1, Opts),
             case proplists:get_value(return, Opts, list) of
-                list -> M2;
-                map -> maps:from_list(M2);
-                orddict -> orddict:from_list(M2);
-                dict -> dict:from_list(M2)
+                list -> List;
+                map -> maps:from_list(List);
+                orddict -> orddict:from_list(List);
+                dict -> dict:from_list(List)
             end;
        (Bad) ->
             fail({bad_map, Bad})
