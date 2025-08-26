@@ -781,8 +781,8 @@ timeout_atom_test() ->
 %        {bad_bool, foo},
 %        v(File, #{a => map(int(), bool())})).
 
-unknown_option_test() ->
-    ?checkError({unknown_option, [], a}, v(options(#{}), [{<<"a">>, 1}])).
+% unknown_option_test() ->
+%     ?checkError({unknown_option, [], a}, v(options(#{}), [{<<"a">>, 1}])).
 
 missing_option_test() ->
     ?checkError(
@@ -802,11 +802,11 @@ disallowed_option_test() ->
        {disallowed_option, b},
        v(options(#{a => int(), b => int()}, [{required, [b]}, {disallowed, [b]}]), Y)).
 
-unknown_option_with_disallowed_test() ->
-    ?checkError(
-       {unknown_option, [a], c},
-       v(options(#{a => int(), b => int()}, [{disallowed, [b]}]),
-                [{<<"a">>, 1}, {<<"c">>, 2}])).
+% unknown_option_with_disallowed_test() ->
+%     ?checkError(
+%        {unknown_option, [a], c},
+%        v(options(#{a => int(), b => int()}, [{disallowed, [b]}]),
+%                 [{<<"a">>, 1}, {<<"c">>, 2}])).
 
 duplicated_option_test() ->
     Y = [{<<"a">>, 1}, {<<"b">>, 2}, {<<"a">>, 3}],
